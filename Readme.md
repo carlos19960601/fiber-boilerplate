@@ -12,3 +12,4 @@
 我们项目的使用情况是 `log error` 级别的打印栈，warn 和 info 都不打印，当然 case by case 还得看实际使用情况
 
 如果`Wrap`多次可以看这里 [为什么不允许处处使用 errors.Wrap](https://lailin.xyz/post/go-training-03.html#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%8D%E5%85%81%E8%AE%B8%E5%A4%84%E5%A4%84%E4%BD%BF%E7%94%A8-errors-Wrap)
+
