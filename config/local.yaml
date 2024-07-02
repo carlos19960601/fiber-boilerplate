@@ -1,0 +1,10 @@
+env: local
+http:
+  #  host: 0.0.0.0
+  host: 127.0.0.1
+  port: 8888
+db:
+  driver: mysql
+  dsn: root:123456@tcp(127.0.0.1:3306)/boilerlate?charset=utf8mb4&parseTime=True&loc=Local
+log:
+  level: debug
