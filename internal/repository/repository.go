@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"time"
 
 	"github.com/carlos19960601/fiber-boilerplate/internal/pkg/config"
@@ -8,6 +9,50 @@ import (
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
+
+type TxKey string
+
+const ctxTxKey TxKey = "TxKey"
+
+type Transaction interface {
+	Transaction(ctx context.Context, fn func(ctx context.Context) error) error
+}
+
+type Repository struct {
+	db *gorm.DB
+	//rdb    *redis.Client
+}
+
+func NewRepository(
+	db *gorm.DB,
+	// rdb *redis.Client,
+) *Repository {
+	return &Repository{
+		db: db,
+		//rdb:    rdb,
+	}
+}
+
+func NewTransaction(r *Repository) Transaction {
+	return r
+}
+
+func (r *Repository) DB(ctx context.Context) *gorm.DB {
+	v := ctx.Value(ctxTxKey)
+	if v != nil {
+		if tx, ok := v.(*gorm.DB); ok {
+			return tx
+		}
+	}
+	return r.db.WithContext(ctx)
+}
+
+func (r *Repository) Transaction(ctx context.Context, fn func(ctx context.Context) error) error {
+	return r.db.WithContext(ctx).Transaction(func(tx *gorm.DB) error {
+		ctx = context.WithValue(ctx, ctxTxKey, tx)
+		return fn(ctx)
+	})
+}
 
 func NewDB(cfg *config.Config) *gorm.DB {
 	var (

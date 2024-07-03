@@ -21,11 +21,16 @@ type DB struct {
 	DSN    string `yaml:"dsn"`
 }
 
+type JWT struct {
+	Key string `yaml:"key"`
+}
+
 type Config struct {
 	Env  string `yaml:"env"`
 	HTTP HTTP   `yaml:"http"`
 	Log  Log    `yaml:"log"`
 	DB   DB     `yaml:"db"`
+	JWT  JWT    `yaml:"jwt"`
 }
 
 func ParseWithPath(path string) (*Config, error) {
